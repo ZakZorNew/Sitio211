@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AETHON — Inteligencia Autónoma</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #040408;
+      --bg2: #0A0A12;
+      --surface: rgba(255,255,255,0.04);
+      --surface-2: rgba(255,255,255,0.02);
+      --border: rgba(255,255,255,0.08);
+      --white: #F5F1EB;
+      --muted: rgba(245,241,235,0.6);
+      --gold: #C9A96E;
+      --gold-light: #E6C98E;
+      --violet: #8A6CFF;
+      --violet2: #5B42C7;
+      --display: 'Bodoni Moda', serif;
+      --body: 'Outfit', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(138,108,255,0.12), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(201,169,110,0.08), transparent 30%),
+        linear-gradient(180deg, #0A0A12 0%, #040408 100%);
+
+      color: var(--white);
+
+      font-family: var(--body);
+
+      overflow-x: hidden;
+
+      animation: fadeIn 1s ease;
+    }
+
+    body::before {
+      content: '';
+
+      position: fixed;
+      inset: 0;
+
+      background-image:
+        radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+
+      background-size: 80px 80px;
+
+      opacity: 0.15;
+
+      pointer-events: none;
+
+      z-index: -1;
+    }
+
+    ::selection {
+      background: var(--gold);
+      color: black;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 26px 60px;
+
+      z-index: 1000;
+
+      transition: 0.4s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(4,4,8,0.82);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 60px;
+    }
+
+    .logo {
+      font-family: var(--display);
+      font-size: 1.7rem;
+      letter-spacing: 0.2em;
+      color: white;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+    .nav-btn {
+      padding: 14px 28px;
+      border-radius: 999px;
+
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+
+      color: black;
+
+      font-weight: 600;
+
+      text-decoration: none;
+
+      transition: 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(201,169,110,0.35);
+    }
+
+    .hero {
+      min-height: 100vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      position: relative;
+
+      overflow: hidden;
+
+      padding: 0 24px;
+    }
+
+    #bg-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.8;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 1000px;
+      height: 1000px;
+
+      background:
+        radial-gradient(circle,
+        rgba(138,108,255,0.22),
+        rgba(201,169,110,0.12),
+        transparent 68%);
+
+      filter: blur(40px);
+
+      animation: pulse 10s ease-in-out infinite;
+
+      z-index: 0;
+    }
+
+    @keyframes pulse {
+      0%,100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.15);
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1000px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+
+      margin-bottom: 30px;
+
+      color: var(--gold);
+
+      text-transform: uppercase;
+
+      font-size: 0.75rem;
+
+      letter-spacing: 0.3em;
+    }
+
+    .eyebrow::before,
+    .eyebrow::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    h1 {
+      font-family: var(--display);
+
+      font-size: clamp(4rem, 8vw, 8rem);
+
+      line-height: 0.95;
+
+      font-weight: 500;
+
+      letter-spacing: -0.03em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(
+        90deg,
+        white,
+        var(--gold),
+        var(--violet),
+        white
+      );
+
+      background-size: 300% 300%;
+
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      animation: gradientMove 8s ease infinite;
+    }
+
+    @keyframes gradientMove {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .hero-sub {
+      margin: 32px auto 0;
+
+      max-width: 700px;
+
+      font-size: 1.1rem;
+
+      color: var(--muted);
+
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      margin-top: 50px;
+
+      display: flex;
+      gap: 18px;
+
+      justify-content: center;
+
+      flex-wrap: wrap;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      padding: 16px 34px;
+
+      border-radius: 999px;
+
+      text-decoration: none;
+
+      font-size: 0.82rem;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.15em;
+
+      transition: 0.35s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: black;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 40px rgba(201,169,110,0.35);
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--border);
+      color: white;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .hero-panel {
+      margin-top: 60px;
+
+      display: inline-flex;
+
+      gap: 50px;
+
+      padding: 24px 40px;
+
+      background: rgba(255,255,255,0.04);
+
+      border: 1px solid rgba(255,255,255,0.08);
+
+      border-radius: 24px;
+
+      backdrop-filter: blur(20px);
+
+      box-shadow:
+        0 0 40px rgba(138,108,255,0.12),
+        inset 0 0 0 1px rgba(255,255,255,0.02);
+    }
+
+    .hero-panel div {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hero-panel strong {
+      font-size: 1.3rem;
+    }
+
+    .hero-panel span {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    section {
+      padding: 130px 60px;
+      position: relative;
+    }
+
+    .section-label {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      font-size: 0.72rem;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-family: var(--display);
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .section-text {
+      color: var(--muted);
+      margin-top: 24px;
+      max-width: 700px;
+      line-height: 1.9;
+      font-size: 1rem;
+    }
+
+    .dashboard-preview {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .dashboard-window {
+      background: rgba(255,255,255,0.03);
+
+      border: 1px solid rgba(255,255,255,0.08);
+
+      border-radius: 30px;
+
+      overflow: hidden;
+
+      backdrop-filter: blur(25px);
+
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    }
+
+    .window-top {
+      display: flex;
+      gap: 10px;
+      padding: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .window-top span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+    }
+
+    .dashboard-grid {
+      padding: 30px;
+
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 20px;
+    }
+
+    .metric-card {
+      border-radius: 24px;
+      height: 160px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(138,108,255,0.2),
+          rgba(201,169,110,0.1)
+        );
+
+      border: 1px solid rgba(255,255,255,0.06);
+
+      position: relative;
+
+      overflow: hidden;
+    }
+
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          120deg,
+          transparent,
+          rgba(255,255,255,0.12),
+          transparent
+        );
+
+      transform: translateX(-100%);
+
+      animation: shine 5s linear infinite;
+    }
+
+    @keyframes shine {
+      to {
+        transform: translateX(200%);
+      }
+    }
+
+    .large {
+      height: 240px;
+    }
+
+    .wide {
+      grid-column: span 2;
+    }
+
+    .cap-grid {
+      margin-top: 70px;
+
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 24px;
+    }
+
+    .cap-card {
+      background: rgba(255,255,255,0.03);
+
+      border: 1px solid rgba(255,255,255,0.06);
+
+      border-radius: 28px;
+
+      padding: 42px;
+
+      backdrop-filter: blur(14px);
+
+      transition: 0.4s ease;
+
+      position: relative;
+
+      overflow: hidden;
+    }
+
+    .cap-card:hover {
+      transform: translateY(-10px);
+
+      border-color: rgba(201,169,110,0.4);
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.4),
+        0 0 40px rgba(138,108,255,0.15);
+    }
+
+    .cap-icon {
+      width: 60px;
+      height: 60px;
+
+      border-radius: 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: rgba(255,255,255,0.05);
+
+      border: 1px solid rgba(255,255,255,0.08);
+
+      font-size: 1.4rem;
+
+      margin-bottom: 24px;
+    }
+
+    .cap-card h3 {
+      font-family: var(--display);
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+    }
+
+    .cap-card p {
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 24px;
+      margin-top: 70px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 26px;
+      padding: 36px;
+      text-align: center;
+      backdrop-filter: blur(14px);
+    }
+
+    .stat h3 {
+      font-family: var(--display);
+      font-size: 3rem;
+      color: white;
+    }
+
+    .stat p {
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .cta {
+      text-align: center;
+    }
+
+    .cta-box {
+      padding: 90px 40px;
+
+      border-radius: 40px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(138,108,255,0.15),
+          rgba(201,169,110,0.08)
+        );
+
+      border: 1px solid rgba(255,255,255,0.08);
+
+      backdrop-filter: blur(20px);
+
+      position: relative;
+
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+
+      position: absolute;
+      width: 500px;
+      height: 500px;
+
+      background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+
+      top: -200px;
+      right: -100px;
+    }
+
+    footer {
+      padding: 80px 60px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+    }
+
+    .footer-grid h4 {
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.8rem;
+    }
+
+    .footer-grid ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-grid a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .footer-grid a:hover {
+      color: white;
+    }
+
+    .footer-brand p {
+      margin-top: 20px;
+      max-width: 320px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .copyright {
+      margin-top: 70px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 1s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1100px) {
+
+      .dashboard-preview,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cap-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+    }
+
+    @media (max-width: 700px) {
+
+      nav {
+        padding: 20px;
+      }
+
+      nav.scrolled {
+        padding: 16px 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      section {
+        padding: 90px 20px;
+      }
+
+      .cap-grid,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-panel {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wide {
+        grid-column: span 1;
+      }
+
+      h1 {
+        font-size: 4rem;
+      }
+
+    }
+
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+
+    <a href="#" class="logo">
+      AETH<span>◆</span>N
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#platform">Plataforma</a></li>
+      <li><a href="#capabilities">Capacidades</a></li>
+      <li><a href="#metrics">Métricas</a></li>
+      <li><a href="#contact">Contacto</a></li>
+    </ul>
+
+    <a href="#contact" class="nav-btn">
+      Solicitar Demo
+    </a>
+
+  </nav>
+
+  <section class="hero">
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="hero-glow"></div>
+
+    <div class="hero-content">
+
+      <div class="eyebrow">
+        Inteligencia Artificial Empresarial
+      </div>
+
+      <h1>
+        La nueva era de la<br>
+        inteligencia <span class="gradient-text">autónoma</span>
+      </h1>
+
+      <p class="hero-sub">
+        Construimos infraestructura de IA capaz de aprender,
+        adaptarse y operar a escala global con velocidad,
+        precisión y autonomía empresarial.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-primary">
+          Solicitar demo
+        </a>
+
+        <a href="#platform" class="btn-secondary">
+          Explorar plataforma
+        </a>
+      </div>
+
+      <div class="hero-panel">
+
+        <div>
+          <strong>99.98%</strong>
+          <span>Uptime IA</span>
+        </div>
+
+        <div>
+          <strong>340+</strong>
+          <span>Empresas</span>
+        </div>
+
+        <div>
+          <strong>24/7</strong>
+          <span>Inferencia Global</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section id="platform">
+
+    <div class="dashboard-preview reveal">
+
+      <div>
+
+        <div class="section-label">
+          Plataforma
+        </div>
+
+        <h2>
+          Control total sobre tu infraestructura IA
+        </h2>
+
+        <p class="section-text">
+          Observa modelos, agentes autónomos, inferencia,
+          rendimiento y decisiones críticas desde una única
+          plataforma diseñada para organizaciones modernas.
+        </p>
+
+      </div>
+
+      <div class="dashboard-window">
+
+        <div class="window-top">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="dashboard-grid">
+
+          <div class="metric-card large"></div>
+          <div class="metric-card"></div>
+          <div class="metric-card"></div>
+          <div class="metric-card wide"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section id="capabilities">
+
+    <div class="section-label reveal">
+      Capacidades
+    </div>
+
+    <h2 class="reveal">
+      Tecnología diseñada para operar al límite
+    </h2>
+
+    <div class="cap-grid">
+
+      <div class="cap-card reveal">
+        <div class="cap-icon">🧠</div>
+        <h3>Modelos especializados</h3>
+        <p>
+          Entrenamiento privado y optimización avanzada
+          para sectores financieros, salud, logística y defensa.
+        </p>
+      </div>
+
+      <div class="cap-card reveal">
+        <div class="cap-icon">⚡</div>
+        <h3>Automatización cognitiva</h3>
+        <p>
+          Agentes capaces de ejecutar procesos complejos
+          con supervisión mínima y aprendizaje continuo.
+        </p>
+      </div>
+
+      <div class="cap-card reveal">
+        <div class="cap-icon">🌐</div>
+        <h3>Inferencia global</h3>
+        <p>
+          Infraestructura distribuida con latencia ultra baja
+          y escalabilidad empresarial.
+        </p>
+      </div>
+
+      <div class="cap-card reveal">
+        <div class="cap-icon">🔒</div>
+        <h3>Privacidad total</h3>
+        <p>
+          Despliegues cloud, híbridos y on-premise con
+          máxima seguridad y control de datos.
+        </p>
+      </div>
+
+      <div class="cap-card reveal">
+        <div class="cap-icon">📡</div>
+        <h3>Predicción avanzada</h3>
+        <p>
+          Sistemas predictivos capaces de detectar patrones
+          antes de que ocurran eventos críticos.
+        </p>
+      </div>
+
+      <div class="cap-card reveal">
+        <div class="cap-icon">🔬</div>
+        <h3>Research Lab</h3>
+        <p>
+          Investigación aplicada en agentes autónomos,
+          razonamiento multimodal y modelos frontier.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section id="metrics">
+
+    <div class="section-label reveal">
+      Métricas
+    </div>
+
+    <h2 class="reveal">
+      Impacto medible a escala global
+    </h2>
+
+    <div class="stats">
+
+      <div class="stat reveal">
+        <h3>12×</h3>
+        <p>ROI promedio en 6 meses</p>
+      </div>
+
+      <div class="stat reveal">
+        <h3>4.2B</h3>
+        <p>Predicciones generadas</p>
+      </div>
+
+      <div class="stat reveal">
+        <h3>98%</h3>
+        <p>Retención empresarial</p>
+      </div>
+
+      <div class="stat reveal">
+        <h3>28</h3>
+        <p>Países activos</p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="cta" id="contact">
+
+    <div class="cta-box reveal">
+
+      <div class="section-label">
+        Comienza ahora
+      </div>
+
+      <h2>
+        Reinventa tu empresa con inteligencia autónoma
+      </h2>
+
+      <p class="section-text" style="margin-inline:auto; text-align:center;">
+        Agenda una llamada con nuestro equipo y descubre cómo
+        AETHON puede transformar operaciones, análisis y automatización.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="mailto:hola@aethon.ai" class="btn-primary">
+          Hablar con un experto
+        </a>
+      </div>
+
+    </div>
+
+  </section>
+
+  <footer>
+
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+
+        <a href="#" class="logo">
+          AETH<span>◆</span>N
+        </a>
+
+        <p>
+          Inteligencia Artificial enterprise para organizaciones
+          que construyen el futuro.
+        </p>
+
+      </div>
+
+      <div>
+        <h4>Producto</h4>
+
+        <ul>
+          <li><a href="#">Plataforma</a></li>
+          <li><a href="#">Agentes</a></li>
+          <li><a href="#">Modelos</a></li>
+          <li><a href="#">Seguridad</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Empresa</h4>
+
+        <ul>
+          <li><a href="#">Nosotros</a></li>
+          <li><a href="#">Carreras</a></li>
+          <li><a href="#">Research</a></li>
+          <li><a href="#">Prensa</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Recursos</h4>
+
+        <ul>
+          <li><a href="#">API</a></li>
+          <li><a href="#">Documentación</a></li>
+          <li><a href="#">Soporte</a></li>
+          <li><a href="#">Comunidad</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="copyright">
+      © 2026 AETHON AI — Todos los derechos reservados.
+    </div>
+
+  </footer>
+
+  <script>
+
+    const nav = document.getElementById('nav');
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    const observer = new IntersectionObserver(entries => {
+
+      entries.forEach(entry => {
+
+        if(entry.isIntersecting){
+          entry.target.classList.add('active');
+        }
+
+      });
+
+    }, {
+      threshold: 0.12
+    });
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      observer.observe(el);
+    });
+
+    const canvas = document.getElementById('bg-canvas');
+
+    const ctx = canvas.getContext('2d');
+
+    function resize(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    resize();
+
+    window.addEventListener('resize', resize);
+
+    const NODE_COUNT = window.innerWidth < 768 ? 28 : 70;
+
+    const nodes = [];
+
+    for(let i=0;i<NODE_COUNT;i++){
+
+      nodes.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        vx: (Math.random()-0.5)*0.5,
+        vy: (Math.random()-0.5)*0.5,
+        r: Math.random()*2+1
+      });
+
+    }
+
+    function animate(){
+
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      nodes.forEach(node => {
+
+        node.x += node.vx;
+        node.y += node.vy;
+
+        if(node.x < 0 || node.x > canvas.width) node.vx *= -1;
+        if(node.y < 0 || node.y > canvas.height) node.vy *= -1;
+
+      });
+
+      for(let i=0;i<nodes.length;i++){
+
+        for(let j=i+1;j<nodes.length;j++){
+
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+
+          const dist = Math.sqrt(dx*dx + dy*dy);
+
+          if(dist < 140){
+
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+
+            ctx.strokeStyle = `rgba(201,169,110,${1-dist/140})`;
+
+            ctx.lineWidth = 0.5;
+
+            ctx.stroke();
+
+          }
+
+        }
+
+      }
+
+      nodes.forEach(node => {
+
+        ctx.beginPath();
+        ctx.arc(node.x,node.y,node.r,0,Math.PI*2);
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+        ctx.fill();
+
+      });
+
+      requestAnimationFrame(animate);
+
+    }
+
+    animate();
+
+  </script>
+
+</body>
+</html>
